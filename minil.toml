@@ -1,0 +1,6 @@
+name = "WWW-API-Binance"
+# badges = ["travis"]
+authority="cpan:YTURTLE"
+
+module_maker="ModuleBuildTiny"
+
