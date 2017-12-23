@@ -5,7 +5,6 @@ use HTTP::Tiny;
 use Carp;
 use URI;
 use JSON::PP qw/decode_json/;
-use Data::Dumper;
 
 our $AGENT = HTTP::Tiny->new(agent => 'WWW::API::Binance/0.01');
 
