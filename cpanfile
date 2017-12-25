@@ -5,6 +5,7 @@ requires 'URI';
 requires 'Net::SSLeay';
 requires 'Time::HiRes';
 requires 'Try::Tiny';
+requires 'Protocol::WebSocket';
 
 on 'test' => sub {
     requires 'Test::More', '0.98';
