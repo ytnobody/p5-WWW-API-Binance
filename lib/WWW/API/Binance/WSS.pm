@@ -80,15 +80,14 @@ sub diff_depth {
 
 sub connect {
     my ($self) = @_;
-    my $url = $BASEURL. '/stream?stream='. join('/', keys %{$self->{streams}});
+    my $url = $BASEURL. '/stream?streams='. join('/', keys %{$self->{streams}});
     my $stream = Protocol::WebSocket::Client->new(url => $url);
     my $code;
     for my $trigger (qw/connect error read write eof frame/) {
         $code = $self->{triggers}{$trigger} || sub {};
         $stream->on($trigger => $code);
     }
-    $self->{stream} = $stream;
-    $self->{stream}->connect;
+    $self->{stream} = $stream->connect;
 }
 
 sub read {
