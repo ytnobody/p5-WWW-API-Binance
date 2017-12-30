@@ -16,6 +16,7 @@ sub order {
         POST => '/api/v3/order',
         symbol => $symbol1.$symbol2,
         timeInForce => 'GTC',
+        timestamp => $self->server_time + 1000,
         %param
     )->do;
 }
@@ -23,13 +24,21 @@ sub order {
 sub buy {
     my ($self, $symbol1, $symbol2, %param) = @_;
     
-    return $self->order($symbol1, $symbol2, side => 'BUY', %param);
+    return $self->order($symbol1, $symbol2, 
+        side => 'BUY', 
+        timestamp => $self->server_time + 1000,
+        %param
+    );
 }
 
 sub sell {
     my ($self, $symbol1, $symbol2, %param) = @_;
     
-    return $self->order($symbol1, $symbol2, side => 'SELL', %param);
+    return $self->order($symbol1, $symbol2, 
+        side => 'SELL', 
+        timestamp => $self->server_time + 1000,
+        %param
+    );
 }
 
 sub query_order {
@@ -38,6 +47,7 @@ sub query_order {
     return $self->request(
         GET => '/api/v3/order',
         symbol => $symbol1.$symbol2,
+        timestamp => $self->server_time + 1000,
         %param
     )->do;
 }
@@ -48,6 +58,7 @@ sub cancel_order {
     return $self->request(
         DELETE => '/api/v3/order',
         symbol => $symbol1.$symbol2,
+        timestamp => $self->server_time + 1000,
         %param
     )->do;
 }
@@ -58,6 +69,7 @@ sub active_orders {
     return $self->request(
         GET => '/api/v3/openOrders',
         symbol => $symbol1.$symbol2,
+        timestamp => $self->server_time + 1000,
         %param
     )->do;
 }
@@ -68,6 +80,7 @@ sub all_orders {
     return $self->request(
         GET => '/api/v3/allOrders',
         symbol => $symbol1.$symbol2,
+        timestamp => $self->server_time + 1000,
         %param
     )->do;
 }
@@ -77,6 +90,7 @@ sub account {
 
     return $self->request(
         GET => '/api/v3/account',
+        timestamp => $self->server_time + 1000,
         %param
     )->do;
 }
@@ -87,6 +101,7 @@ sub my_trades {
     return $self->request(
         GET => '/api/v3/myTrades',
         symbol => $symbol1.$symbol2,
+        timestamp => $self->server_time + 1000,
         %param
     )->do;
 }
