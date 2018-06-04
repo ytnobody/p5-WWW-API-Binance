@@ -2,7 +2,7 @@ requires 'perl', '5.014';
 
 requires 'Digest::SHA';
 requires 'URI';
-requires 'Net::SSLeay';
+requires 'Net::SSLeay' => 1.85; 
 requires 'Time::HiRes';
 requires 'Try::Tiny';
 requires 'Protocol::WebSocket';
