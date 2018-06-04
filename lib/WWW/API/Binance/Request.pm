@@ -2,6 +2,7 @@ package WWW::API::Binance::Request;
 use strict;
 use warnings;
 use HTTP::Tiny;
+use Try::Tiny;
 use Carp;
 use URI;
 use JSON::PP qw/decode_json/;
@@ -31,7 +32,12 @@ sub do {
 
     my $res = $AGENT->request(@$self);
     if (!$res->{success}) {
-        my $err = decode_json($res->{content});
+        my $err;
+        try { 
+            $err = decode_json($res->{content});
+        } catch {
+            croak $res->{content};
+        };
         croak sprintf(
             "%s %s: %s (code=%s)", 
             $res->{status}, 
