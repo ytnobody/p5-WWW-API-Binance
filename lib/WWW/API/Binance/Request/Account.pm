@@ -15,7 +15,6 @@ sub order {
     return $self->request(
         POST => '/api/v3/order',
         symbol => $symbol1.$symbol2,
-        timeInForce => 'GTC',
         timestamp => $self->server_time + 1000,
         %param
     )->do;
