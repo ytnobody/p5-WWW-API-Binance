@@ -26,7 +26,6 @@ sub buy {
     
     return $self->order($symbol1, $symbol2, 
         side => 'BUY', 
-        timestamp => $self->server_time + 1000,
         %param
     );
 }
@@ -36,7 +35,6 @@ sub sell {
     
     return $self->order($symbol1, $symbol2, 
         side => 'SELL', 
-        timestamp => $self->server_time + 1000,
         %param
     );
 }
