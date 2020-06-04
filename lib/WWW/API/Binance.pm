@@ -60,7 +60,7 @@ sub request {
 
 sub _is_public {
     my ($path) = @_;
-    $path =~ m'^/api/v1/' ? 1 : undef;
+    $path =~ m'^/api/v[0-9]+/' ? 1 : undef;
 }
 
 1;
