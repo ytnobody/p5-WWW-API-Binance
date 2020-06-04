@@ -3,8 +3,6 @@ use 5.014;
 use strict;
 use warnings;
 use WWW::API::Binance::Request;
-use WWW::API::Binance::Request::Public;
-use WWW::API::Binance::Request::Account;
 use Carp;
 use URI;
 use URI::Escape;
@@ -39,18 +37,7 @@ sub request {
         push @query_item, sprintf('%s=%s', $key, uri_escape($val));
     }
     my $query = join '&', @query_item;
-
-    if (_is_public($path)) {
-        $uri->query($query);
-    } 
-    else {
-        if ($query !~ /timestamp=/) {
-            my $time = int(Time::HiRes::time() * 1000);
-            $query .= "&timestamp=$time";
-        }
-        my $sign = hmac_sha256_hex($query, $self->{secret_key});
-        $uri->query("$query&signature=$sign");
-    }
+    $uri->query($query);
     
     return WWW::API::Binance::Request->new(
         $method, $uri->as_string,
@@ -58,9 +45,23 @@ sub request {
     );
 }
 
-sub _is_public {
-    my ($path) = @_;
-    $path =~ m'^/api/v[0-9]+/' ? 1 : undef;
+sub sign {
+    my ($self, $req) = @_;
+
+    my $uri = $req->uri;
+    my $query = $uri->query;
+
+    use Data::Dumper;
+
+    if (defined($query) && $query !~ /timestamp=/) {
+        my $time = int(Time::HiRes::time() * 1000);
+        $query .= "&timestamp=$time";
+    }
+
+    my $sign = hmac_sha256_hex($query, $self->{secret_key});
+    $uri->query("$query&signature=$sign");
+    $req->[1] = $uri->as_string;
+    return $req;
 }
 
 1;
